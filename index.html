@@ -86,18 +86,20 @@ h2{font-family:var(--mono);font-weight:700;font-size:clamp(25px,5vw,42px);line-h
 .hero .lead{font-size:clamp(18px,2.4vw,21px);line-height:1.45;margin-bottom:10px;max-width:30ch}
 .place{display:flex;align-items:center;gap:10px;color:var(--muted);margin-bottom:14px}
 .place svg{width:20px;height:20px;fill:none;stroke:var(--green);stroke-width:1.5;flex:none}
-/* hero photo: keeps proportions, never stretches; on short or wide screens it crops from the bottom so face and card stay in view */
-.hud{position:relative;width:100%;max-width:470px;margin:0 auto;aspect-ratio:941/1672;max-height:calc(100vh - 96px);max-height:calc(100svh - 96px);overflow:hidden;background:#222}
+/* hero photo: always the whole frame (no cropping), as large as the screen allows */
+.hud{--gap:170px;position:relative;margin:0 auto;aspect-ratio:941/1672;height:auto;
+  width:min(100%, calc((100vh - var(--gap)) * 941 / 1672));
+  width:min(100%, calc((100svh - var(--gap)) * 941 / 1672));
+  background:#222}
 .hud svg{display:block;width:100%;height:100%}
-@media(max-width:899px) and (min-height:561px){.hud{order:-1;max-height:calc(100vh - 300px);max-height:calc(100svh - 300px);min-height:360px}.hero{gap:26px;padding-top:16px}}
-@media(min-width:600px) and (max-width:899px) and (min-height:561px){.hud{max-width:620px;aspect-ratio:4/5;max-height:calc(100svh - 330px)}}
+@media(max-width:899px){.hud{order:-1}.hero{gap:26px;padding-top:16px}}
 @media(max-height:560px) and (orientation:landscape){
-  .hero{grid-template-columns:1fr minmax(220px,40%);gap:28px;align-items:start;padding-top:20px}
-  .hud{max-width:none;aspect-ratio:auto;height:calc(100vh - 90px);height:calc(100svh - 90px);min-height:260px;max-height:none}
+  .hero{grid-template-columns:1fr auto;gap:28px;align-items:start;padding-top:16px}
+  .hud{order:0;--gap:84px}
 }
+@media(min-width:900px){.hud{--gap:122px}.hero{padding-top:32px}}
 .hud text{font-family:var(--mono)}
 .hud .rec{animation:blink 1.4s steps(1) infinite}
-@media(min-width:900px) and (min-height:561px){.hud{width:100%;max-width:480px;aspect-ratio:auto;height:min(820px,calc(100vh - 150px));height:min(820px,calc(100svh - 150px));min-height:480px;max-height:none}}
 .hud .lbl text,.hud text.lbl{paint-order:stroke;stroke:#0B0C0B;stroke-width:5px;stroke-linejoin:round}
 /* landscape phones: button goes to the header so it does not cover the screen */
 @media(max-height:560px) and (orientation:landscape){
@@ -111,7 +113,6 @@ h2{font-family:var(--mono);font-weight:700;font-size:clamp(25px,5vw,42px);line-h
 /* big monitors: use the extra space */
 @media(min-width:1800px) and (min-height:900px){
   .wrap{max-width:1360px}
-  .hud{max-width:600px;height:min(1000px,calc(100svh - 170px))}
   .hero h1{font-size:64px}
 }
 
@@ -240,7 +241,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
     </div>
 
     <figure class="hud" role="img" aria-label="Полина идёт по пешеходному переходу, кадр в стиле камеры наблюдения: рамка распознавания на лице, отметки «маникюр обнаружен» на руках, карточка с портретом — опыт 3+ года, сертифицированный мастер, Красногорск, метро Строгино, ЖК «Спутник», запись через Telegram.">
-      <svg viewBox="0 0 941 1672" preserveAspectRatio="xMidYMin slice" aria-hidden="true">
+      <svg viewBox="0 0 941 1672" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
         <image href="hero-street.webp" x="0" y="0" width="941" height="1672"/>
         <g class="lbl" fill="#E9EAE4">
           <text x="44" y="74" font-size="32">КАМЕРА_07</text>
@@ -284,17 +285,6 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
         <g class="det lbl" fill="#2BFF3A" font-size="16">
           <text x="734" y="928" text-anchor="end">маникюр: обнаружен</text>
           <text x="220" y="1046">руки: ухожены</text>
-        </g>
-
-        <!-- bottom-left -->
-        <g class="det">
-          <rect x="34" y="1498" width="272" height="98" fill="#0B0C0B" opacity=".78"/>
-          <rect x="34" y="1498" width="3" height="98" fill="#2BFF3A"/>
-          <g fill="#E9EAE4" font-size="16">
-            <text x="50" y="1526">ЗОНА: КРАСНОГОРСК</text>
-            <text x="50" y="1552">МЕТРО: СТРОГИНО</text>
-            <text x="50" y="1578" fill="#2BFF3A">СВЯЗЬ: TG / ВК</text>
-          </g>
         </g>
         <rect class="scan" x="24" y="30" width="893" height="3" fill="#2BFF3A" opacity="0"/>
       </svg>
@@ -352,7 +342,6 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
         </ul>
       </div>
     </div>
-    <p class="where reveal"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Где: Красногорск, метро Строгино, ЖК «Спутник»</p>
     <p class="where reveal"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Время процедуры зависит от сложности работы и состояния ногтей.</p>
   </section>
 
@@ -374,7 +363,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
     <div class="tag reveal"><span>05</span><b>Обо мне</b></div>
     <div class="term reveal">
       <div class="term-head"><span>&gt; о_мастере.txt</span><b>● проверено</b></div>
-      <p>Я <em>сертифицированный</em> мастер маникюра. Работаю с ногтями больше трёх лет. Делаю и нежный нюд, и смелый объёмный дизайн.</p>
+      <p>Делаю и нежный <em>нюд</em>, и смелый объёмный дизайн.</p>
       <div class="term-sub">&gt; как_я_работаю</div>
       <ol class="method">
         <li><span>01</span>Работаю аккуратно, соблюдаю технику и архитектуру ногтя.</li>
@@ -384,26 +373,10 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
     </div>
   </section>
 
-  <!-- 6. С ЧЕМ ПРИХОДЯТ -->
-  <section>
-    <div class="tag reveal"><span>06</span><b>Чем помогаю</b></div>
-    <h2 class="reveal">С чем ко мне приходят</h2>
-    <ul class="help">
-      <li class="reveal">
-        <svg viewBox="0 0 44 44" aria-hidden="true"><rect x="15" y="4" width="14" height="11" rx="3"/><path d="M12 15h20v20a5 5 0 0 1-5 5H17a5 5 0 0 1-5-5z"/><path d="M17 24h10"/></svg>
-        <p><b>Маникюр</b> — опрятные руки на каждый день.</p></li>
-      <li class="reveal">
-        <svg viewBox="0 0 44 44" aria-hidden="true"><path d="M15 40V14a7 7 0 0 1 14 0v26z"/><path d="M15 22h14"/><path d="M36 6v8M32 10h8"/></svg>
-        <p><b>Наращивание</b> — когда хочется длины и формы.</p></li>
-      <li class="reveal">
-        <svg viewBox="0 0 44 44" aria-hidden="true"><path d="M22 4 7 10v11c0 9 6.5 15.5 15 19 8.5-3.5 15-10 15-19V10z"/><path d="m16 22 4.5 4.5L29 18"/></svg>
-        <p><b>Укрепление и коррекция</b> — если ногти слабые или отросли.</p></li>
-    </ul>
-  </section>
 
   <!-- 7. ОТЗЫВЫ И СТЕРИЛЬНОСТЬ -->
   <section>
-    <div class="tag reveal"><span>07</span><b>Отзывы</b></div>
+    <div class="tag reveal"><span>06</span><b>Отзывы</b></div>
     <h2 class="reveal">Что пишут после записи</h2>
     <div class="reviews">
       <figure class="review reveal" data-id="ОТЗЫВ_01"><blockquote>«Приветы!! Да вообще супер классно, такие тоненькие получились, как свои)))»</blockquote><figcaption>Скриншот из переписки</figcaption><img src="review-01.webp" width="1330" height="142" loading="lazy" decoding="async" alt="Скриншот этого отзыва, имя и фото клиентки скрыты"></figure>
@@ -419,7 +392,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
   <!-- 8. КОНТАКТЫ -->
   <section id="contacts">
     <div class="contact reveal">
-      <div class="tag"><span>08</span><b>Канал связи</b></div>
+      <div class="tag"><span>07</span><b>Канал связи</b></div>
       <h2>Запишемся?</h2>
       <p>Выберите время онлайн или напишите мне — подберём удобное.</p>
       <div class="contact-btns">
@@ -429,7 +402,6 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
       </div>
       <div class="links">
         <a class="tlink" href="https://t.me/maniqueen" target="_blank" rel="noopener">Канал с работами @maniqueen</a>
-        <a class="tlink" href="https://vk.ru/v0iidcntrctt" target="_blank" rel="noopener">Страница ВКонтакте</a>
       </div>
     </div>
   </section>
